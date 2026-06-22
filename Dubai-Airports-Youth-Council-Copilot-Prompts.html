@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Try Microsoft 365 Copilot — Live Prompts · Dubai Airports Youth Council</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+      const theme = param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef; --cp-bg-elevated: #fcfbf8; --cp-surface: #ffffff; --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede; --cp-border-strong: #919191; --cp-text: #242424; --cp-text-muted: #5c5c5c; --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b; --cp-accent-hover: #9a1a41; --cp-accent-soft: rgba(177, 31, 75, 0.08); --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a; --cp-danger: #dc2626; --cp-warning: #f59e0b; --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12); --cp-panel: rgba(255, 255, 255, 0.86); --cp-panel-strong: rgba(255, 255, 255, 0.96);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a; --cp-bg-elevated: #343231; --cp-surface: #292929; --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747; --cp-border-strong: #5f5f5f; --cp-text: #dedede; --cp-text-muted: #919191; --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1; --cp-accent-hover: #fb7b91; --cp-accent-soft: rgba(253, 142, 161, 0.14); --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80; --cp-danger: #f87171; --cp-warning: #fbbf24; --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32); --cp-panel: rgba(41, 41, 41, 0.72); --cp-panel-strong: rgba(41, 41, 41, 0.96);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--cp-bg); color: var(--cp-text);
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.45;
+    }
+    button, input, select, textarea { font: inherit; }
+    h1, h2, h3, h4 { margin: 0; line-height: 1.15; letter-spacing: -0.02em; }
+    h1 { font-size: clamp(28px, 4vw, 46px); }
+    h3 { font-size: 19px; }
+    p { margin: 0; color: var(--cp-text-muted); }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
+    .eyebrow { margin: 0 0 6px; color: var(--cp-accent); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    .hero {
+      padding: 30px; border: 1px solid var(--cp-border); border-radius: 16px;
+      background: linear-gradient(135deg, var(--cp-panel-strong), var(--cp-panel));
+      box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    }
+    .brand { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 14px; background: var(--cp-accent); color: var(--cp-accent-fg);
+      display: grid; place-items: center; font-weight: 800; letter-spacing: -0.04em;
+      box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    }
+    .hero p.lead { margin-top: 14px; font-size: 17px; max-width: 760px; }
+    .howto { margin-top: 16px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+    .howto .step { padding: 12px 14px; border: 1px solid var(--cp-border); border-radius: 12px; background: var(--cp-surface); font-size: 14px; }
+    .howto .step b { color: var(--cp-accent); }
+    .controls { position: sticky; top: 0; z-index: 5; padding: 14px 0; margin-top: 22px; background: var(--cp-bg); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .pill, .tab, .copy {
+      border: 1px solid var(--cp-border); border-radius: 0.625rem; background: var(--cp-surface); color: var(--cp-text); cursor: pointer;
+    }
+    .pill, .tab { padding: 8px 12px; font-weight: 700; font-size: 14px; }
+    .pill.active, .tab.active { background: var(--cp-accent); border-color: var(--cp-accent); color: var(--cp-accent-fg); }
+    .search {
+      width: min(360px, 100%); padding: 9px 12px; border-radius: 0.625rem; border: 1px solid var(--cp-border);
+      background: var(--cp-surface); color: var(--cp-text); margin-left: auto;
+    }
+    .tabs { margin-top: 8px; }
+    .count { margin: 14px 2px 6px; font-size: 13px; color: var(--cp-text-soft); font-weight: 700; }
+    .prompt-list { display: grid; gap: 12px; }
+    .prompt-card { border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-surface); overflow: hidden; box-shadow: 0 0 2px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.12); }
+    .prompt-head {
+      display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 16px;
+      border-bottom: 1px solid var(--cp-border); background: var(--cp-bg-elevated);
+    }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 0.625rem;
+      background: var(--cp-surface-soft); border: 1px solid var(--cp-border); color: var(--cp-text-muted); font-size: 12px; font-weight: 700;
+    }
+    .tag.accent { color: var(--cp-accent); background: var(--cp-accent-soft); border-color: var(--cp-accent); }
+    .prompt-head p { font-size: 13px; }
+    .prompt-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 16px; }
+    .prompt { padding: 14px; border: 1px solid var(--cp-border); border-radius: 14px; background: var(--cp-surface-soft); }
+    .prompt .label { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; font-weight: 800; color: var(--cp-text); }
+    .prompt pre { white-space: pre-wrap; margin: 0; color: var(--cp-text); font-family: Consolas, "Courier New", Courier, monospace; font-size: 13.5px; line-height: 1.5; }
+    .copy { padding: 6px 10px; font-size: 12px; font-weight: 800; }
+    .copy:hover { border-color: var(--cp-accent); background: var(--cp-accent-soft); }
+    .rtl { direction: rtl; text-align: right; }
+    .hidden { display: none !important; }
+    .toast {
+      position: fixed; right: 20px; bottom: 20px; padding: 12px 14px; border-radius: 0.625rem; background: var(--cp-accent);
+      color: var(--cp-accent-fg); box-shadow: var(--cp-shadow); transform: translateY(160%); transition: transform 180ms ease; z-index: 20; font-weight: 800;
+    }
+    .toast.show { transform: translateY(0); }
+    .foot { margin-top: 26px; text-align: center; font-size: 12px; color: var(--cp-text-soft); }
+    @media (max-width: 760px) {
+      .howto { grid-template-columns: 1fr; }
+      .prompt-body { grid-template-columns: 1fr; }
+      .search { margin-left: 0; width: 100%; }
+    }
+    @media print {
+      .controls, .copy, .search { display: none !important; }
+      body { background: #fff; }
+      .prompt-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="brand">
+        <div class="brand-mark">365</div>
+        <div>
+          <p class="eyebrow">Dubai Airports Youth Council</p>
+          <h3>Microsoft 365 Copilot — live prompts</h3>
+        </div>
+      </div>
+      <h1>Try it yourself</h1>
+      <p class="lead">Pick a prompt, copy it, and paste it into Copilot in the matching app. Anything in [brackets] is a placeholder &mdash; swap it for your own file, email, chat, meeting, or name. Every prompt is here in English and Arabic.</p>
+      <div class="howto">
+        <div class="step"><b>1. Choose</b> &mdash; filter by app or search for a task.</div>
+        <div class="step"><b>2. Copy</b> &mdash; tap Copy on English, Arabic, or both.</div>
+        <div class="step"><b>3. Paste &amp; run</b> &mdash; drop it into Copilot and press send.</div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="toolbar" role="group" aria-label="Language and level filters">
+        <button class="pill active" data-lang="both">English &amp; Arabic</button>
+        <button class="pill" data-lang="en">English</button>
+        <button class="pill" data-lang="ar">العربية</button>
+        <input class="search" id="promptSearch" type="search" placeholder="Search prompts…">
+      </div>
+      <div class="toolbar tabs" id="appTabs" role="group" aria-label="App filters"></div>
+    </div>
+
+    <div class="count" id="count"></div>
+    <div class="prompt-list" id="promptList"></div>
+
+    <p class="foot">Microsoft 365 Copilot respects your existing permissions and sensitivity labels. Always review Copilot's output before sending or sharing. Sample prompts for demonstration.</p>
+  </div>
+  <div class="toast" id="toast">Copied</div>
+
+  <script>
+    const prompts = [
+      { app: "Copilot Chat", group: "core", title: "Morning brief", task: "Start the day across all of M365",
+        en: "Act as my assistant on the Dubai Airports Youth Council. Review my recent emails, Teams messages, meetings, and files related to the Future Travel Experience initiative. Give me a short morning brief with: top priorities today, decisions needed, anything waiting on me, and meetings to prepare for. Include source links.",
+        ar: "تصرّف كمساعد لي في مجلس شباب مطارات دبي. راجع رسائل بريدي الأخيرة ورسائل Teams والاجتماعات والملفات المتعلقة بمبادرة تجربة السفر المستقبلية. أعطني موجزاً صباحياً قصيراً يتضمن: أهم أولويات اليوم، والقرارات المطلوبة، وما ينتظر ردي، والاجتماعات التي يجب التحضير لها. أضف روابط المصادر." },
+      { app: "Copilot Chat", group: "core", title: "What changed?", task: "Detect updates since yesterday",
+        en: "What changed since yesterday about the Youth Innovation Summit? Summarize updates from emails, Teams chats, and files. Separate confirmed decisions from open questions.",
+        ar: "ما الذي تغيّر منذ الأمس بخصوص قمة الابتكار الشبابية؟ لخّص التحديثات من البريد الإلكتروني ومحادثات Teams والملفات. افصل القرارات المؤكدة عن الأسئلة المفتوحة." },
+      { app: "Copilot Chat", group: "core", title: "Find it fast", task: "Locate a file or fact",
+        en: "Find the latest version of the Future Travel Experience project brief and tell me the budget figure we requested and who last edited it.",
+        ar: "ابحث عن أحدث نسخة من موجز مشروع تجربة السفر المستقبلية، وأخبرني بمبلغ الميزانية الذي طلبناه ومن قام بآخر تعديل عليه." },
+      { app: "Copilot Chat", group: "advanced", title: "Prep me for a meeting", task: "Build a meeting prep pack",
+        en: "Prepare me for the quarterly leadership review. Summarize the purpose, who is attending, the related emails and files, a suggested agenda, three likely tough questions, and how I should answer them.",
+        ar: "جهّزني للمراجعة الفصلية مع القيادة. لخّص الهدف، والحضور، والرسائل والملفات ذات الصلة، وجدول أعمال مقترح، وثلاثة أسئلة صعبة محتملة، وكيف ينبغي أن أجيب عليها." },
+      { app: "Outlook", group: "core", title: "Summarize a thread", task: "Understand a long email chain",
+        en: "Summarize this email thread for me. What is the main topic, what decisions were made, what is the sponsor asking for, what is the deadline, and exactly what response is needed from me?",
+        ar: "لخّص لي سلسلة الرسائل هذه. ما الموضوع الرئيسي، وما القرارات التي اتُّخذت، وماذا يطلب الراعي، وما الموعد النهائي، وما الرد المطلوب مني تحديداً؟" },
+      { app: "Outlook", group: "core", title: "Draft a sponsor reply", task: "Write a polished response",
+        en: "Draft a reply that thanks the sponsor, confirms the summit date, answers their budget question, and proposes a short call next week. Keep it professional, warm, and under 150 words.",
+        ar: "اكتب رداً يشكر الراعي، ويؤكد موعد القمة، ويجيب عن سؤاله حول الميزانية، ويقترح مكالمة قصيرة الأسبوع المقبل. اجعله مهنياً ولطيفاً وأقل من 150 كلمة." },
+      { app: "Outlook", group: "core", title: "Make it bilingual", task: "Create English + Arabic versions",
+        en: "Rewrite this email in both English and Arabic. Keep it concise and respectful, suitable for a senior Dubai Airports leader. Suggest two clear subject line options.",
+        ar: "أعد صياغة هذه الرسالة باللغتين الإنجليزية والعربية. اجعلها مختصرة ومحترمة ومناسبة لقيادي رفيع في مطارات دبي. اقترح خيارين واضحين لعنوان الرسالة." },
+      { app: "Outlook", group: "advanced", title: "Coach my tone", task: "Improve before sending",
+        en: "Review my draft reply with Coaching. Is the tone confident and respectful for a senior leader? Suggest edits to make it clearer and more concise, and flag anything that could be misread.",
+        ar: "راجع مسودة ردي باستخدام ميزة التوجيه. هل النبرة واثقة ومحترمة وتناسب قيادياً رفيعاً؟ اقترح تعديلات تجعلها أوضح وأكثر اختصاراً، ونبّهني لأي عبارة قد يُساء فهمها." },
+      { app: "Outlook", group: "advanced", title: "Inbox highlights", task: "Prioritize what matters",
+        en: "Review my inbox from the last 48 hours and highlight what needs my attention. Group items into: act today, can wait, and FYI. Tell me why each 'act today' item matters.",
+        ar: "راجع صندوق الوارد خلال آخر 48 ساعة وأبرز ما يحتاج إلى انتباهي. صنّف العناصر إلى: تصرّف اليوم، يمكن أن ينتظر، وللعلم فقط. واذكر لماذا كل عنصر ضمن «تصرّف اليوم» مهم." },
+      { app: "Teams", group: "core", title: "Catch up on a channel", task: "Summarize a discussion",
+        en: "Summarize this Teams conversation for someone who was away. Give the key points, decisions, open questions, and any action items with owners and due dates.",
+        ar: "لخّص محادثة Teams هذه لشخص كان غائباً. اذكر النقاط الرئيسية، والقرارات، والأسئلة المفتوحة، وأي مهام مع المسؤولين عنها وتواريخ استحقاقها." },
+      { app: "Teams", group: "core", title: "Meeting recap", task: "Turn a transcript into a recap",
+        en: "From this meeting, create a recap with: purpose, attendees, key decisions, action items by owner, and a short follow-up message I can post in the channel.",
+        ar: "من هذا الاجتماع، أنشئ ملخصاً يتضمن: الهدف، والحضور، والقرارات الرئيسية، والمهام حسب المسؤول، ورسالة متابعة قصيرة يمكنني نشرها في القناة." },
+      { app: "Teams", group: "core", title: "What did I miss?", task: "Recap a meeting you skipped",
+        en: "I couldn't attend this meeting. What were the three most important things discussed, and is there anything the Youth Council needs to do as a result?",
+        ar: "لم أتمكن من حضور هذا الاجتماع. ما أهم ثلاثة أمور تمت مناقشتها، وهل هناك ما يتعيّن على مجلس الشباب القيام به نتيجة لذلك؟" },
+      { app: "Teams", group: "advanced", title: "Help me reply", task: "Draft a chat response",
+        en: "Based on this chat, draft a short, friendly message proposing that we meet for 30 minutes this week to finalize the summit date, and suggest two time options.",
+        ar: "بناءً على هذه المحادثة، اكتب رسالة قصيرة وودّية تقترح أن نجتمع لمدة 30 دقيقة هذا الأسبوع لتحديد موعد القمة نهائياً، واقترح خيارين للوقت." },
+      { app: "Word", group: "core", title: "Draft from the brief", task: "Create a one-page memo",
+        en: "Using this project brief, write a one-page executive summary for Dubai Airports leadership. Structure it as: the opportunity, what we heard, our three pilots, the budget ask, and the decisions we need.",
+        ar: "باستخدام موجز المشروع هذا، اكتب ملخصاً تنفيذياً من صفحة واحدة لقيادة مطارات دبي. نظّمه كالتالي: الفرصة، ما الذي سمعناه، مبادراتنا التجريبية الثلاث، طلب الميزانية، والقرارات المطلوبة." },
+      { app: "Word", group: "core", title: "Summarize this document", task: "Get the essentials fast",
+        en: "Summarize this document in five bullet points a busy executive could read in 20 seconds, and list any decisions it is asking for.",
+        ar: "لخّص هذا المستند في خمس نقاط يمكن لمسؤول مشغول قراءتها في 20 ثانية، واذكر أي قرارات يطلبها المستند." },
+      { app: "Word", group: "core", title: "Make it leadership-ready", task: "Improve tone and clarity",
+        en: "Rewrite this section so it is concise, confident, and suitable for senior leadership. Remove repetition, clarify the decisions needed, and add a one-line opening summary.",
+        ar: "أعد صياغة هذا القسم ليكون مختصراً وواثقاً ومناسباً للقيادة العليا. احذف التكرار، ووضّح القرارات المطلوبة، وأضف ملخصاً افتتاحياً من سطر واحد." },
+      { app: "Word", group: "advanced", title: "Add a risks section", task: "Extend the document",
+        en: "Add a short Risks and Mitigations section to this brief covering budget timing, volunteer availability during peak season, and cross-department coordination. Keep each risk to one line plus a mitigation.",
+        ar: "أضف قسماً قصيراً عن المخاطر وخطط التخفيف إلى هذا الموجز يغطي توقيت الميزانية، وتوفّر المتطوعين خلال موسم الذروة، والتنسيق بين الإدارات. اجعل كل خطر في سطر واحد مع خطة تخفيف." },
+      { app: "Word", group: "advanced", title: "Bilingual brief", task: "Produce a dual-language version",
+        en: "Create a bilingual English-Arabic version of this brief. Keep the Arabic formal and natural rather than literal, preserve the headings, and make the structure easy to scan.",
+        ar: "أنشئ نسخة ثنائية اللغة (إنجليزية وعربية) من هذا الموجز. اجعل العربية رسمية وطبيعية لا حرفية، وحافظ على العناوين، واجعل الهيكل سهل التصفّح." },
+      { app: "PowerPoint", group: "core", title: "Create deck from Word", task: "Generate the pitch",
+        en: "Create a presentation from the Future Travel Experience project brief. Make it a 7-slide leadership pitch: title, the opportunity, what we heard, our three pilots, the summit, the ask, and next steps. Add concise speaker notes.",
+        ar: "أنشئ عرضاً تقديمياً من موجز مشروع تجربة السفر المستقبلية. اجعله عرضاً قيادياً من 7 شرائح: العنوان، الفرصة، ما الذي سمعناه، مبادراتنا الثلاث، القمة، الطلب، والخطوات التالية. أضف ملاحظات متحدث مختصرة." },
+      { app: "PowerPoint", group: "core", title: "Polish my slides", task: "Refine a rough deck",
+        en: "Review this deck for a leadership audience. Make the titles action-oriented, reduce the text on each slide, improve the flow, and suggest a stronger closing slide.",
+        ar: "راجع هذا العرض لجمهور قيادي. اجعل عناوين الشرائح عملية وموجّهة نحو الفعل، وقلّل النص في كل شريحة، وحسّن التسلسل، واقترح شريحة ختامية أقوى." },
+      { app: "PowerPoint", group: "core", title: "Add speaker notes", task: "Prepare to present",
+        en: "Add clear speaker notes to each slide that a first-time presenter could read confidently. Keep each note to two or three short sentences.",
+        ar: "أضف ملاحظات متحدث واضحة لكل شريحة بحيث يستطيع متحدث لأول مرة قراءتها بثقة. اجعل كل ملاحظة في جملتين أو ثلاث قصيرة." },
+      { app: "PowerPoint", group: "advanced", title: "Summarize a deck", task: "Understand slides quickly",
+        en: "Summarize this presentation in five bullet points and tell me what the single most important ask of the audience is.",
+        ar: "لخّص هذا العرض في خمس نقاط، وأخبرني ما هو أهم طلب واحد من الجمهور." },
+      { app: "PowerPoint", group: "advanced", title: "3-minute script", task: "Generate a speaking script",
+        en: "Write a 3-minute speaking script for this deck. Include an engaging opening, smooth transitions between slides, and a confident closing ask for budget and endorsement.",
+        ar: "اكتب نصاً للتحدث لمدة 3 دقائق لهذا العرض. اجعل فيه افتتاحية جذّابة، وانتقالات سلسة بين الشرائح، وطلباً ختامياً واثقاً للميزانية والدعم." },
+      { app: "Excel", group: "core", title: "Analyse the survey", task: "Find trends and exceptions",
+        en: "Analyse this Pulse Survey table. Summarize the top trends over the months, the strongest and weakest touchpoints, and any exceptions that need attention. Recommend one chart and explain why it helps.",
+        ar: "حلّل جدول استطلاع النبض هذا. لخّص أبرز الاتجاهات عبر الأشهر، وأقوى وأضعف نقاط التواصل، وأي حالات استثنائية تحتاج إلى اهتمام. اقترح مخططاً واحداً واشرح سبب فائدته." },
+      { app: "Excel", group: "core", title: "Explain the numbers", task: "Turn data into a story",
+        en: "Turn the key findings in this table into three leadership talking points. Avoid technical language and focus on impact, priority, and recommended action.",
+        ar: "حوّل النتائج الرئيسية في هذا الجدول إلى ثلاث نقاط حديث للقيادة. تجنّب اللغة التقنية وركّز على الأثر والأولوية والإجراء المقترح." },
+      { app: "Excel", group: "core", title: "Suggest a formula", task: "Add a calculated column",
+        en: "Add a column that flags any row where the satisfaction score is below 3.6 as 'Needs attention'. Show me the formula and explain how it works.",
+        ar: "أضف عموداً يضع علامة «يحتاج إلى اهتمام» لأي صف تقل فيه درجة الرضا عن 3.6. أرني الصيغة واشرح كيف تعمل." },
+      { app: "Excel", group: "advanced", title: "Highlight the weak spot", task: "Drill into one touchpoint",
+        en: "Focus only on Wayfinding. How did its satisfaction score and average wait time change from January to June, and how does Terminal 3 compare to Terminals 1 and 2 in June?",
+        ar: "ركّز على «الإرشاد والتوجيه» فقط. كيف تغيّرت درجة الرضا ومتوسط وقت الانتظار من يناير إلى يونيو، وكيف تقارن المبنى 3 بالمبنيين 1 و2 في يونيو؟" },
+      { app: "Excel", group: "advanced", title: "Questions to ask ops", task: "Prepare smart follow-ups",
+        en: "Based on this data, suggest five questions the Youth Council should ask the operations team before the next leadership review.",
+        ar: "بناءً على هذه البيانات، اقترح خمسة أسئلة ينبغي لمجلس الشباب طرحها على فريق العمليات قبل المراجعة القيادية القادمة." },
+      { app: "Copilot agents", group: "advanced", title: "Define the agent", task: "No-code agent builder: instructions",
+        en: "Create an agent called 'Youth Council Assistant'. Its job is to answer Dubai Airports employees' questions about the Future Travel Experience initiative and the Youth Innovation Summit. Be friendly, concise, and encouraging. Answer only from the council's knowledge and files; if unsure, point the user to the council Teams channel. Reply in the user's language, English or Arabic.",
+        ar: "أنشئ وكيلاً (Agent) باسم «مساعد مجلس الشباب». مهمته الإجابة على أسئلة موظفي مطارات دبي حول مبادرة تجربة السفر المستقبلية وقمة الابتكار الشبابية. كن ودوداً ومختصراً ومشجعاً. أجب فقط من معرفة المجلس وملفاته، وإن لم تكن متأكداً فوجّه المستخدم إلى قناة المجلس في Teams. أجب بلغة المستخدم، عربية أو إنجليزية." },
+      { app: "Copilot agents", group: "advanced", title: "Ground it in knowledge", task: "Add knowledge sources",
+        en: "Use the Youth Council Assistant knowledge file and the Youth Council SharePoint site as the agent's only knowledge sources. Do not use the public web. Keep answers grounded in those sources and cite them when possible.",
+        ar: "استخدم ملف معرفة «مساعد مجلس الشباب» وموقع SharePoint الخاص بمجلس الشباب كمصادر المعرفة الوحيدة للوكيل. لا تستخدم الويب العام. اجعل الإجابات مستندة إلى تلك المصادر مع ذكرها عند الإمكان." },
+      { app: "Copilot agents", group: "core", title: "Ask the agent", task: "Try it as a teammate",
+        en: "How do I submit an idea to the Youth Innovation Summit, who can take part, and what kind of ideas is the council looking for this year?",
+        ar: "كيف أقدّم فكرة لقمة الابتكار الشبابية، ومن يمكنه المشاركة، وما نوع الأفكار التي يبحث عنها المجلس هذا العام؟" },
+      { app: "Copilot agents", group: "advanced", title: "Idea-intake helper", task: "A second focused agent",
+        en: "Create a second agent that helps employees turn a rough idea into a one-paragraph summit submission. Ask the user for the problem, their idea, and the expected benefit, then draft a clear, concise submission and suggest a short title.",
+        ar: "أنشئ وكيلاً ثانياً يساعد الموظفين على تحويل فكرة أولية إلى مشاركة من فقرة واحدة للقمة. اسأل المستخدم عن المشكلة وفكرته والفائدة المتوقعة، ثم اكتب مشاركة واضحة ومختصرة واقترح عنواناً قصيراً." },
+      { app: "Copilot agents", group: "advanced", title: "Share responsibly", task: "Publish and govern",
+        en: "Summarize how to share this agent with the Youth Council team safely: who can use it, what data it can see, how it respects existing permissions and sensitivity labels, and a reminder that answers should be verified before acting.",
+        ar: "لخّص كيفية مشاركة هذا الوكيل مع فريق مجلس الشباب بأمان: من يمكنه استخدامه، وما البيانات التي يمكنه الوصول إليها، وكيف يحترم الأذونات الحالية وتصنيفات الحساسية، مع التذكير بضرورة التحقق من الإجابات قبل التصرف بناءً عليها." }
+    ];
+
+    const appOrder = ["All", ...Array.from(new Set(prompts.map(p => p.app)))];
+    let activeApp = "All", activeLang = "both";
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
+    const tag = (t, e = "") => `<span class="tag ${e}">${t}</span>`;
+    const escapeHtml = t => t.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
+
+    function renderTabs() {
+      $("#appTabs").innerHTML = appOrder.map(a => `<button class="tab ${a === activeApp ? "active" : ""}" data-app="${a}">${a}</button>`).join("");
+      $$("#appTabs .tab").forEach(b => b.addEventListener("click", () => { activeApp = b.dataset.app; renderTabs(); renderPrompts(); }));
+    }
+
+    function renderPrompts() {
+      const q = $("#promptSearch").value.trim().toLowerCase();
+      const list = prompts.filter(p => {
+        const appMatch = activeApp === "All" || p.app === activeApp;
+        const text = `${p.app} ${p.title} ${p.task} ${p.en} ${p.ar}`.toLowerCase();
+        return appMatch && (!q || text.includes(q));
+      });
+      $("#count").textContent = `${list.length} prompt${list.length === 1 ? "" : "s"}`;
+      $("#promptList").innerHTML = list.map((p, i) => `
+        <article class="prompt-card">
+          <div class="prompt-head">
+            <div>
+              <div class="meta">${tag(p.app, "accent")}</div>
+              <h3>${p.title}</h3>
+              <p>${p.task}</p>
+            </div>
+            <button class="copy" data-copy-prompt="${i}">Copy both</button>
+          </div>
+          <div class="prompt-body">
+            <div class="prompt en ${activeLang === "ar" ? "hidden" : ""}">
+              <div class="label">English <button class="copy" data-copy-text="${encodeURIComponent(p.en)}">Copy</button></div>
+              <pre>${escapeHtml(p.en)}</pre>
+            </div>
+            <div class="prompt ar rtl ${activeLang === "en" ? "hidden" : ""}">
+              <div class="label">العربية <button class="copy" data-copy-text="${encodeURIComponent(p.ar)}">نسخ</button></div>
+              <pre>${escapeHtml(p.ar)}</pre>
+            </div>
+          </div>
+        </article>`).join("") || `<article class="prompt-card"><div class="prompt-body"><div class="prompt"><h3>No prompts found</h3><p>Try another keyword or app.</p></div></div></article>`;
+      $$("[data-copy-text]").forEach(b => b.addEventListener("click", () => copyText(decodeURIComponent(b.dataset.copyText))));
+      $$("[data-copy-prompt]").forEach(b => b.addEventListener("click", () => {
+        const card = b.closest(".prompt-card");
+        const en = card.querySelector(".en pre")?.innerText || "";
+        const ar = card.querySelector(".ar pre")?.innerText || "";
+        copyText(`English:\n${en}\n\nالعربية:\n${ar}`);
+      }));
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const t = $("#toast"); t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 1200);
+      });
+    }
+
+    function setLanguage(lang) {
+      activeLang = lang;
+      $$("[data-lang]").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+      renderPrompts();
+    }
+
+    $$("[data-lang]").forEach(b => b.addEventListener("click", () => setLanguage(b.dataset.lang)));
+    $("#promptSearch").addEventListener("input", renderPrompts);
+
+    renderTabs();
+    renderPrompts();
+  </script>
+</body>
+</html>
